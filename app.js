@@ -11,6 +11,7 @@ const contributorList = document.querySelector("#contributor-list");
 const operationCount = document.querySelector("#operation-count");
 
 let currentValue = 0;
+let currentInput = "0";
 let pendingOperation = null;
 let awaitingSecondOperand = false;
 let replaceOnNextDigit = false;
@@ -29,7 +30,7 @@ function setStatus(message, isError = false) {
 }
 
 function updateDisplay() {
-  display.textContent = formatNumber(currentValue);
+  display.textContent = currentInput;
   displayHint.textContent = pendingOperation
     ? `${formatNumber(pendingOperation.firstOperand)} ${pendingOperation.operation.symbol} — enter another number`
     : "Choose a number to get started";
@@ -37,18 +38,28 @@ function updateDisplay() {
 
 function enterDigit(digit) {
   if (awaitingSecondOperand || replaceOnNextDigit) {
-    currentValue = Number(digit);
+    currentValue = 0;
+    currentInput = "0";
     awaitingSecondOperand = false;
     replaceOnNextDigit = false;
+  }
+
+  if (digit === ".") {
+    if (currentInput.includes(".")) {
+      return;
+    }
+    currentInput += ".";
   } else {
-    const nextValue = `${currentValue === 0 ? "" : formatNumber(currentValue)}${digit}`;
-    if (nextValue.length > 15) {
+    const nextValue = `${currentInput === "0" ? "" : currentInput}${digit}`;
+    if (nextValue.replace(".", "").length > 15) {
       setStatus("Maximum of 15 digits", true);
       return;
     }
+    currentInput = nextValue;
     currentValue = Number(nextValue);
   }
 
+  currentValue = Number(currentInput);
   setStatus(pendingOperation ? "Enter the second number" : "Number entered");
   updateDisplay();
 }
@@ -60,6 +71,7 @@ function calculate(operation, firstOperand, secondOperand) {
       : operation.execute(firstOperand, secondOperand);
     const parsedResult = Number(result);
     currentValue = Number(formatNumber(parsedResult));
+    currentInput = formatNumber(currentValue);
     pendingOperation = null;
     awaitingSecondOperand = false;
     replaceOnNextDigit = true;
@@ -125,6 +137,7 @@ function renderOperations() {
     const button = document.createElement("button");
     button.className = "operation-button";
     button.type = "button";
+    button.dataset.operationSymbol = operation.symbol;
     button.setAttribute("aria-label", `${operation.label}, ${operation.arity === 1 ? "one" : "two"} number${operation.arity === 1 ? "" : "s"}`);
 
     const symbol = document.createElement("span");
@@ -176,12 +189,68 @@ keypad.addEventListener("click", (event) => {
 
 clearButton.addEventListener("click", () => {
   currentValue = 0;
+  currentInput = "0";
   pendingOperation = null;
   awaitingSecondOperand = false;
   replaceOnNextDigit = false;
   setStatus("Ready when you are");
   updateDisplay();
   renderEqualsButton();
+});
+
+function flashButton(button) {
+  button.classList.add("keyboard-active");
+  window.setTimeout(() => button.classList.remove("keyboard-active"), 140);
+}
+
+document.addEventListener("keydown", (event) => {
+  if (event.altKey || event.ctrlKey || event.metaKey) {
+    return;
+  }
+
+  const target = event.target;
+  if (target instanceof HTMLElement && (target.isContentEditable || target.matches("input, textarea, select"))) {
+    return;
+  }
+
+  if (/^[0-9.]$/.test(event.key)) {
+    const button = keypad.querySelector(`[data-digit="${event.key}"]`);
+    if (button) {
+      event.preventDefault();
+      flashButton(button);
+      button.click();
+    }
+    return;
+  }
+
+  if (["-", "%", "^", "!"].includes(event.key)) {
+    const symbols = event.key === "!" ? ["!", "n!"] : [event.key];
+    const operation = operations.find((item) => symbols.includes(item.symbol));
+    const button = operation && Array.from(operationGrid.querySelectorAll(".operation-button"))
+      .find((item) => item.dataset.operationSymbol === operation.symbol);
+    if (button) {
+      event.preventDefault();
+      flashButton(button);
+      button.click();
+    }
+    return;
+  }
+
+  if (event.key === "Enter" || event.key === "=") {
+    const button = keypad.querySelector(".equals-key");
+    if (button) {
+      event.preventDefault();
+      flashButton(button);
+      button.click();
+    }
+    return;
+  }
+
+  if (event.key === "Escape" || event.key === "Backspace" || event.key.toLowerCase() === "c") {
+    event.preventDefault();
+    flashButton(clearButton);
+    clearButton.click();
+  }
 });
 
 renderOperations();
