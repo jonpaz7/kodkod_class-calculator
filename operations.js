@@ -58,4 +58,19 @@ export const operations = [
       return result;
     },
   },
+
+  {
+    id: "division",
+    label: "Division",
+    symbol: "÷",
+    args: 2,
+    execute: (a, b) => {
+      if (b === 0) {
+        throw new Error("Cannot divide by zero");
+      }
+      return a / b;
+    },
+  },
+
+
 ];
