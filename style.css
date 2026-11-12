@@ -145,6 +145,7 @@ h1 span {
 }
 
 .display-panel {
+  position: relative;
   min-height: 132px;
   padding: 16px 18px;
   overflow: hidden;
@@ -155,7 +156,43 @@ h1 span {
     #272544;
 }
 
+.display-watermark {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background: linear-gradient(90deg, #38bdf8, #818cf8, #f472b6, #38bdf8);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-size: clamp(12px, 2.4vw, 22px);
+  font-weight: 800;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  animation: watermarkFloat 8s ease-in-out infinite;
+}
+
+@keyframes watermarkFloat {
+  0%,
+  100% {
+    opacity: 0.15;
+    translate: 0 -3px;
+    rotate: -6deg;
+  }
+
+  50% {
+    opacity: 0.45;
+    translate: 0 3px;
+    rotate: 6deg;
+  }
+}
+
 .display-topline {
+  position: relative;
+  z-index: 1;
   display: flex;
   min-width: 0;
   align-items: center;
@@ -183,6 +220,8 @@ h1 span {
 }
 
 .display-value {
+  position: relative;
+  z-index: 1;
   display: block;
   overflow: hidden;
   margin-top: 14px;
@@ -197,6 +236,8 @@ h1 span {
 }
 
 .display-hint {
+  position: relative;
+  z-index: 1;
   margin-top: 8px;
   color: #aaa7c8;
   font-size: 11px;
