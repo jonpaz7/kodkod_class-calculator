@@ -9,7 +9,7 @@ Choose an unclaimed function and add your name. Check the box when your implemen
 | [ ] | Multiplication | |
 | [ ] | Division | |
 | [ ] | Power | shmuel |
-| [ ] | Modulo (remainder) | |
+| [ ] | Modulo (remainder) | תפוס פנחס גרינפלד|
 | [ ] | Square Root | |
 | [ ] | Percentage | |
 | [ ] | Factorial |תפוס פנחס גרינפלד |
