@@ -4,15 +4,15 @@ Choose an unclaimed function and add your name. Check the box when your implemen
 
 | Done | Function | Student |
 | --- | --- | --- |
-| [ ] | Addition | |
-| [ ] | Subtraction | |
+| [ ] | Addition | | 
+| [ ] | Subtraction | |  תפוס שניאור 
 | [ ] | Multiplication | |
 | [ ] | Division | |
 | [ ] | Power | shmuel |
 | [ ] | Modulo (remainder) | |
 | [ ] | Square Root | |
 | [ ] | Percentage | |
-| [ ] | Factorial | |
+| [ ] | Factorial |תפוס פנחס גרינפלד |
 | [ ] | Absolute Value | |
 | [ ] | Sine | |
 | [ ] | Cosine | |

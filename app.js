@@ -13,6 +13,7 @@ const operationCount = document.querySelector("#operation-count");
 let currentValue = 0;
 let pendingOperation = null;
 let awaitingSecondOperand = false;
+let replaceOnNextDigit = false;
 
 function formatNumber(value) {
   if (!Number.isFinite(value)) {
@@ -35,9 +36,10 @@ function updateDisplay() {
 }
 
 function enterDigit(digit) {
-  if (awaitingSecondOperand) {
+  if (awaitingSecondOperand || replaceOnNextDigit) {
     currentValue = Number(digit);
     awaitingSecondOperand = false;
+    replaceOnNextDigit = false;
   } else {
     const nextValue = `${currentValue === 0 ? "" : formatNumber(currentValue)}${digit}`;
     if (nextValue.length > 15) {
@@ -60,6 +62,7 @@ function calculate(operation, firstOperand, secondOperand) {
     currentValue = Number(formatNumber(parsedResult));
     pendingOperation = null;
     awaitingSecondOperand = false;
+    replaceOnNextDigit = true;
     setStatus(`${operation.label} complete`);
     updateDisplay();
     renderEqualsButton();
@@ -79,6 +82,7 @@ function selectOperation(operation) {
     : currentValue;
   pendingOperation = { operation, firstOperand };
   awaitingSecondOperand = true;
+  replaceOnNextDigit = false;
   setStatus(`Selected ${operation.label}`);
   updateDisplay();
   renderEqualsButton();
@@ -174,6 +178,7 @@ clearButton.addEventListener("click", () => {
   currentValue = 0;
   pendingOperation = null;
   awaitingSecondOperand = false;
+  replaceOnNextDigit = false;
   setStatus("Ready when you are");
   updateDisplay();
   renderEqualsButton();
