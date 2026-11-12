@@ -10,10 +10,7 @@ export const operations = [
     contributor: "Shneor bardugo",
     execute: (first, second) => first - second,
   },
-  
 
-
- export const operations = [
   {
     id: "factorial",
     label: "Factorial",
@@ -34,6 +31,5 @@ export const operations = [
       return result;
     },
   },
-
 
 ];
