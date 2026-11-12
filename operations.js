@@ -2,6 +2,14 @@
 
 export const operations = [
   {
+    id: "add",
+    label: "Addition",
+    symbol: "+",
+    arity: 2,
+    contributor: "Eliav Mauda",
+    execute: (first, second) => first + second,
+  },
+  {
     id: "sub",
     label: "Subtraction",
     symbol: "-",
@@ -38,7 +46,7 @@ export const operations = [
     contributor: "shmuel",
     execute: (base, exponent) => base ** exponent,
   },
- {
+  {
     id: "factorial",
     label: "Factorial",
     symbol: "n!",
@@ -71,6 +79,28 @@ export const operations = [
       return a / b;
     },
   },
-
-
+  {
+    id: "min",
+    label: "minimum",
+    symbol: "Min",
+    arity: 2,
+    contributor: "Eliav Mauda",
+    execute: (a, b) => Math.min(a, b),
+  },
+  {
+    id: "max",
+    label: "maximum",
+    symbol: "Max",
+    arity: 2,
+    contributor: "Eliav Mauda",
+    execute: (a, b) => Math.max(a, b),
+  },
+  {
+    id: "avg",
+    label: "average",
+    symbol: "Avg",
+    arity: 2,
+    contributor: "Eliav Mauda",
+    execute: (a, b) => Math.avg(a, b),
+  },
 ];
