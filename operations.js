@@ -10,4 +10,16 @@ export const operations = [
     execute: (first, second) => first + second,
   },
   */
+ 
+
+  {
+    id: "power",
+    label: "Power",
+    symbol: "^",
+    arity: 2,
+    contributor: "shmuel",
+    execute: (base, exponent) => base ** exponent,
+  },
+
+
 ];
