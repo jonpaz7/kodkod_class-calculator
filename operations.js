@@ -1,13 +1,13 @@
 // Add one object per operation. See README.md for the operation contract.
 export const operations = [
-  /*
+ 
   {
-    id: "add",
-    label: "Addition",
-    symbol: "+",
+    id: "sub",
+    label: "Subtraction",
+    symbol: "-",
     arity: 2,
-    contributor: "Your name",
-    execute: (first, second) => first + second,
+    contributor: "Shneor bardugo",
+    execute: (first, second) => first - second,
   },
-  */
+  
 ];
