@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f5f7fb">
+    <title>Classroom Calculator</title>
+    <link rel="stylesheet" href="style.css">
+    <script type="module" src="app.js"></script>
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="page-header">
+        <a class="brand" href="#" aria-label="Classroom Calculator home">
+          <span class="brand-mark" aria-hidden="true">∑</span>
+          <span>class<span class="brand-light">room</span></span>
+        </a>
+        <span class="project-tag">A calculator built together</span>
+      </header>
+
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">LEARN · BUILD · CONTRIBUTE</p>
+        <h1 id="page-title">One class. <span>Many ways to calculate.</span></h1>
+        <p class="intro-copy">Start with the basics, then add a new operation with every contribution.</p>
+      </section>
+
+      <div class="workspace">
+        <section class="calculator-card" aria-label="Calculator">
+          <div class="display-panel">
+            <div class="display-topline">
+              <span class="display-label">YOUR NUMBER</span>
+              <span class="display-status" id="display-status" aria-live="polite">Ready when you are</span>
+            </div>
+            <output class="display-value" id="display" aria-label="Calculator display">0</output>
+            <div class="display-hint" id="display-hint">Choose a number to get started</div>
+          </div>
+
+          <div class="keypad" id="keypad" aria-label="Number keypad">
+            <button class="number-key" type="button" data-digit="7">7</button>
+            <button class="number-key" type="button" data-digit="8">8</button>
+            <button class="number-key" type="button" data-digit="9">9</button>
+            <button class="number-key" type="button" data-digit="4">4</button>
+            <button class="number-key" type="button" data-digit="5">5</button>
+            <button class="number-key" type="button" data-digit="6">6</button>
+            <button class="number-key" type="button" data-digit="1">1</button>
+            <button class="number-key" type="button" data-digit="2">2</button>
+            <button class="number-key" type="button" data-digit="3">3</button>
+            <button class="number-key number-zero" type="button" data-digit="0">0</button>
+            <button class="clear-key" id="clear" type="button">C <span>Clear</span></button>
+          </div>
+        </section>
+
+        <aside class="contributors-card" aria-labelledby="contributors-title">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">MADE BY THE CLASS</p>
+              <h2 id="contributors-title">Contributors</h2>
+            </div>
+            <span class="count-badge" id="operation-count">0</span>
+          </div>
+          <p class="sidebar-copy">Every merged function gets a place here.</p>
+          <ul class="contributor-list" id="contributor-list" aria-live="polite">
+            <li class="empty-contributors">Your class will show up here.</li>
+          </ul>
+          <a class="contribute-link" href="README.md">How to contribute <span aria-hidden="true">↗</span></a>
+        </aside>
+      </div>
+
+      <section class="operations-section" aria-labelledby="operations-title">
+        <div class="section-heading operations-heading">
+          <div>
+            <p class="eyebrow">GROWING TOGETHER</p>
+            <h2 id="operations-title">Class Operations</h2>
+          </div>
+          <p class="operations-note">New buttons appear when a classmate's pull request is merged.</p>
+        </div>
+        <div class="operation-grid" id="operation-grid" aria-live="polite"></div>
+        <p class="empty-operations" id="empty-operations">No operations yet. Be the first to add one!</p>
+      </section>
+
+      <footer class="page-footer">
+        <span>Made for curious minds.</span>
+        <a href="TODO.md">Pick a function to build <span aria-hidden="true">→</span></a>
+      </footer>
+    </main>
+  </body>
+</html>
