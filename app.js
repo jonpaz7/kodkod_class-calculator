@@ -5,6 +5,7 @@ const displayStatus = document.querySelector("#display-status");
 const displayHint = document.querySelector("#display-hint");
 const keypad = document.querySelector("#keypad");
 const clearButton = document.querySelector("#clear");
+const equalsButton = document.querySelector("#equals");
 const operationGrid = document.querySelector("#operation-grid");
 const emptyOperations = document.querySelector("#empty-operations");
 const contributorList = document.querySelector("#contributor-list");
@@ -77,7 +78,6 @@ function calculate(operation, firstOperand, secondOperand) {
     replaceOnNextDigit = true;
     setStatus(`${operation.label} complete`);
     updateDisplay();
-    renderEqualsButton();
   } catch (error) {
     setStatus(error instanceof Error ? error.message : "The operation could not be completed.", true);
   }
@@ -97,34 +97,6 @@ function selectOperation(operation) {
   replaceOnNextDigit = false;
   setStatus(`Selected ${operation.label}`);
   updateDisplay();
-  renderEqualsButton();
-}
-
-function renderEqualsButton() {
-  const existingButton = keypad.querySelector(".equals-key");
-  if (existingButton) {
-    existingButton.remove();
-  }
-
-  if (!pendingOperation) {
-    return;
-  }
-
-  const equalsButton = document.createElement("button");
-  equalsButton.className = "equals-key";
-  equalsButton.type = "button";
-  equalsButton.textContent = `Calculate ${pendingOperation.operation.label}`;
-  equalsButton.setAttribute("aria-label", `Calculate ${pendingOperation.operation.label}`);
-  equalsButton.addEventListener("click", () => {
-    if (awaitingSecondOperand) {
-      setStatus("Enter the second number first", true);
-      return;
-    }
-
-    calculate(pendingOperation.operation, pendingOperation.firstOperand, currentValue);
-    renderEqualsButton();
-  });
-  keypad.append(equalsButton);
 }
 
 function renderOperations() {
@@ -139,10 +111,11 @@ function renderOperations() {
     button.type = "button";
     button.dataset.operationSymbol = operation.symbol;
     button.setAttribute("aria-label", `${operation.label}, ${operation.arity === 1 ? "one" : "two"} number${operation.arity === 1 ? "" : "s"}`);
+    button.title = operation.label;
 
     const symbol = document.createElement("span");
     symbol.className = "operation-symbol";
-    symbol.textContent = operation.symbol;
+    symbol.textContent = operation.symbol === "n!" ? "!" : operation.symbol;
 
     const label = document.createElement("span");
     label.className = "operation-label";
@@ -188,6 +161,10 @@ keypad.addEventListener("click", (event) => {
 });
 
 clearButton.addEventListener("click", () => {
+  clearCalculator();
+});
+
+function clearCalculator() {
   currentValue = 0;
   currentInput = "0";
   pendingOperation = null;
@@ -195,21 +172,55 @@ clearButton.addEventListener("click", () => {
   replaceOnNextDigit = false;
   setStatus("Ready when you are");
   updateDisplay();
-  renderEqualsButton();
-});
-
-function flashButton(button) {
-  button.classList.add("keyboard-active");
-  window.setTimeout(() => button.classList.remove("keyboard-active"), 140);
 }
 
-document.addEventListener("keydown", (event) => {
-  if (event.altKey || event.ctrlKey || event.metaKey) {
+function calculatePendingOperation() {
+  if (!pendingOperation) {
+    setStatus("Select an operation first", true);
     return;
   }
 
-  const target = event.target;
-  if (target instanceof HTMLElement && (target.isContentEditable || target.matches("input, textarea, select"))) {
+  if (awaitingSecondOperand) {
+    setStatus("Enter the second number first", true);
+    return;
+  }
+
+  calculate(pendingOperation.operation, pendingOperation.firstOperand, currentValue);
+}
+
+equalsButton.addEventListener("click", calculatePendingOperation);
+
+function deleteLastDigit() {
+  if (currentInput === "0") {
+    clearCalculator();
+    return;
+  }
+
+  if (awaitingSecondOperand || replaceOnNextDigit) {
+    currentInput = "0";
+    currentValue = 0;
+    awaitingSecondOperand = false;
+    replaceOnNextDigit = false;
+  } else {
+    currentInput = currentInput.slice(0, -1) || "0";
+    currentValue = Number(currentInput);
+  }
+
+  setStatus(pendingOperation ? "Enter the second number" : "Number entered");
+  updateDisplay();
+}
+
+function flashButton(button) {
+  if (!button) {
+    return;
+  }
+
+  button.classList.add("pressed");
+  window.setTimeout(() => button.classList.remove("pressed"), 140);
+}
+
+window.addEventListener("keydown", (event) => {
+  if (event.altKey || event.ctrlKey || event.metaKey) {
     return;
   }
 
@@ -218,38 +229,41 @@ document.addEventListener("keydown", (event) => {
     if (button) {
       event.preventDefault();
       flashButton(button);
-      button.click();
+      enterDigit(event.key);
     }
     return;
   }
 
-  if (["-", "%", "^", "!"].includes(event.key)) {
-    const symbols = event.key === "!" ? ["!", "n!"] : [event.key];
-    const operation = operations.find((item) => symbols.includes(item.symbol));
-    const button = operation && Array.from(operationGrid.querySelectorAll(".operation-button"))
+  const operation = operations.find((item) => item.symbol === event.key
+    || (event.key === "!" && item.symbol === "n!")
+    || ((event.key === "x" || event.key === "X") && item.symbol === "*"));
+  if (operation) {
+    event.preventDefault();
+    const button = Array.from(operationGrid.querySelectorAll(".operation-button"))
       .find((item) => item.dataset.operationSymbol === operation.symbol);
-    if (button) {
-      event.preventDefault();
-      flashButton(button);
-      button.click();
-    }
+    flashButton(button);
+    selectOperation(operation);
     return;
   }
 
   if (event.key === "Enter" || event.key === "=") {
-    const button = keypad.querySelector(".equals-key");
-    if (button) {
-      event.preventDefault();
-      flashButton(button);
-      button.click();
-    }
+    event.preventDefault();
+    flashButton(equalsButton);
+    calculatePendingOperation();
     return;
   }
 
-  if (event.key === "Escape" || event.key === "Backspace" || event.key.toLowerCase() === "c") {
+  if (event.key === "Backspace") {
     event.preventDefault();
     flashButton(clearButton);
-    clearButton.click();
+    deleteLastDigit();
+    return;
+  }
+
+  if (event.key === "Escape" || event.key.toLowerCase() === "c") {
+    event.preventDefault();
+    flashButton(clearButton);
+    clearCalculator();
   }
 });
 

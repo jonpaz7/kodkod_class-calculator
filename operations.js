@@ -43,7 +43,7 @@ export const operations = [
     label: "Factorial",
     symbol: "n!",
     arity: 1,
-    contributor: "nch22522",
+    contributor: "pinchas",
     execute: (n) => {
       if (!Number.isInteger(n) || n < 0) {
         throw new Error("Factorial requires a non-negative integer");
