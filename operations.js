@@ -1,7 +1,6 @@
 // Add one object per operation. See README.md for the operation contract.
 
 export const operations = [
- 
   {
     id: "sub",
     label: "Subtraction",
@@ -10,9 +9,14 @@ export const operations = [
     contributor: "Shneor bardugo",
     execute: (first, second) => first - second,
   },
-
- 
-
+  {
+    id: "mul",
+    label: "Multiplication",
+    symbol: "*",
+    arity: 2,
+    contributor: "Shneor bardugo",
+    execute: (first, second) => first * second,
+  },
   {
     id: "power",
     label: "Power",
@@ -21,12 +25,7 @@ export const operations = [
     contributor: "shmuel",
     execute: (base, exponent) => base ** exponent,
   },
-
-
-
-
-
-  {
+ {
     id: "factorial",
     label: "Factorial",
     symbol: "n!",
@@ -46,5 +45,4 @@ export const operations = [
       return result;
     },
   },
-
 ];
