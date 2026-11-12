@@ -7,7 +7,7 @@ Choose an unclaimed function and add your name. Check the box when your implemen
 | [ ] | Addition | | 
 | [ ] | Subtraction | |  תפוס שניאור 
 | [ ] | Multiplication | |
-| [ ] | Division | |
+| [ ] | Division | shmuel|
 | [ ] | Power | shmuel |
 | [ ] | Modulo (remainder) | |
 | [ ] | Square Root | |
