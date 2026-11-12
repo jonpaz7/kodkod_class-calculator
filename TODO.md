@@ -5,10 +5,10 @@ Choose an unclaimed function and add your name. Check the box when your implemen
 | Done | Function | Student |
 | --- | --- | --- |
 | [ ] | Addition | | 
-| [ ] | Subtraction | |  תפוס שניאור 
-| [ ] | Multiplication | |
+| [ ] | Subtraction | |    תפוס שניאור 
+| [ ] | Multiplication | | תפוס שניאור
 | [ ] | Division | |
-| [ ] | Power | shmuel |
+| [ ] | Power | |         תפוס שמואל     
 | [ ] | Modulo (remainder) | תפוס פנחס גרינפלד|
 | [ ] | Square Root | |
 | [ ] | Percentage | |
