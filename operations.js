@@ -18,6 +18,19 @@ export const operations = [
     execute: (first, second) => first * second,
   },
   {
+    id: "modulo",
+    label: "Modulo",
+    symbol: "%",
+    arity: 2,
+    contributor: "pinchas",
+    execute: (first, second) => {
+      if (second === 0) {
+        throw new Error("Cannot modulo by zero");
+      }
+      return first % second;
+    },
+  },
+  {
     id: "power",
     label: "Power",
     symbol: "^",
